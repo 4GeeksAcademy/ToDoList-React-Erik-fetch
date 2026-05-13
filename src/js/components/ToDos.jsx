@@ -6,7 +6,8 @@ const ToDo = () => {
     const [toDos, setTodos] = useState([]);
 
     const addTask = () => {
-        setTodos([...toDos, inputValue])
+        if (inputValue.trim() === "") {return}
+        setTodos([...toDos, inputValue.trim()])
         setInputValue('');
     }
 
@@ -23,9 +24,10 @@ const ToDo = () => {
             onChange={e => setInputValue(e.target.value)}
             value={inputValue}
             onKeyDown={(e) => {
-                if (e.key === 'Enter') {
+                if (e.key === 'Enter' ) {
                     addTask();
                 }
+               
             }}
             />
             <div className="task-container">
