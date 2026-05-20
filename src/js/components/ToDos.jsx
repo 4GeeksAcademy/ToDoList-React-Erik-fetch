@@ -13,7 +13,7 @@ const ToDo = () => {
         const init = async () => {
             const userExists = await getTasks();
             if(!userExists) {
-                await createUser(userName);
+                await createUser();
                 await getTasks();
             }
         };
@@ -59,6 +59,7 @@ const ToDo = () => {
     };
 
     const addTask = async () => {
+        if (inputValue.trim() === "") return;
         const newTask = {
             label: inputValue.trim(),
             is_done: false
@@ -87,14 +88,22 @@ const ToDo = () => {
     };
 
     const removeToDo = async (toDoId) => {
-        const response = await fetch(`https://playground.4geeks.com/todo/todos/${toDoId}`, {
-            method: 'DELETE',
-        });
-        if (!response.ok) {
-             throw new Error("Error al eliminar la tarea");
+        
+        try {
+            const response = await fetch(`https://playground.4geeks.com/todo/todos/${toDoId}`, {
+                method: 'DELETE',
+            });
+            if (!response.ok) {
+                 throw new Error("Error al eliminar la tarea");
+            }
+           await getTasks();
         }
-       await getTasks();
-    }
+
+        catch (error){
+            console.error('Error:', error);
+            throw error;
+        };
+    };
 
     return(
         <div className="main-container">
